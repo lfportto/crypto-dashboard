@@ -23,7 +23,8 @@ This is a personal project developed with a focus on improving data analysis ski
 - CoinGecko API
 
 ## Project Architecture
-The figure below shows how the architecture behind this project was structured:
+The figure below shows how the architecture behind this project was structured:  
+**(Coming soon)**
 
 ## Data Pipeline (ETL)
 ### 🔹 Extraction

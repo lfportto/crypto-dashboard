@@ -102,8 +102,16 @@ with st.sidebar:
         options=df["moeda"].unique(),
         default=list(df["moeda"].unique())
     )
+
+    # Tratamento de seleção vazia
+    if not moedas_selecionadas:
+        st.warning("⚠️ Selecione pelo menos uma criptomoeda para visualizar os dados.")
+        st.stop()
+
+    # Aplica o filtro somente se houver seleção
     df_filtrado = df_periodo[
-        df_periodo["moeda"].isin(moedas_selecionadas)]
+        df_periodo["moeda"].isin(moedas_selecionadas)
+    ]
     
     # Filtro de visualização (gráfico 1)
     visualizacao = st.sidebar.selectbox(

@@ -1,10 +1,10 @@
-# Crypto Dashboard — Pipeline ETL com Dashboard Interativo
+# Crypto Dashboard — Análise de Criptomoedas em Tempo Real
 
 📄 [English version](README_English.md)
 
  ## Descrição do Projeto
 
-Este projeto consiste na construção de um pipeline completo de dados (ETL) automatizado para monitoramento de criptomoedas, desde a coleta até a visualização. Os dados são extraídos da API pública da CoinGecko, transformados e armazenados em um banco de dados PostgreSQL na nuvem (Neon). A partir disso, um dashboard interativo foi desenvolvido com Streamlit para análise visual dos dados. Além disso, o pipeline foi automatizado com GitHub Actions, permitindo atualizações periódicas dos dados sem dependência de execução local.
+Este projeto consiste na construção de um `pipeline completo de dados (ETL)` automatizado para monitoramento de criptomoedas, desde a coleta até a visualização. Os dados são extraídos da `API pública da CoinGecko`, transformados e armazenados em um banco de dados `PostgreSQL na nuvem (Neon)`. A partir disso, um dashboard interativo foi desenvolvido com `Streamlit` para análise visual dos dados. Além disso, o pipeline foi automatizado com GitHub Actions, permitindo atualizações periódicas dos dados sem dependência de execução local.
 
 ## 🎯 Objetivo
 Este é um projeto pessoal desenvolvido com foco no aprimoramento de habilidades em análise de dados, incluindo:
@@ -27,13 +27,8 @@ A figura abaixo mostra como foi estruturada a arquitetura por trás desse projet
 
 ## Pipeline de Dados (ETL)
 ### 🔹Extração
-Dados obtidos via API da CoinGecko
-Criptomoedas monitoradas:
-- Bitcoin
-- Ethereum
-- Solana
-- Cardano
-- Binance Coin
+Dados abertos obtidos via API da [CoinGecko](https://docs.coingecko.com)
+- Criptomoedas monitoradas: Bitcoin, Ethereum, Solana, Cardano, e Binance Coin
 ### 🔹Transformação
 - Padronização dos dados
 - Conversão de tipos
@@ -59,115 +54,55 @@ Criptomoedas monitoradas:
 🔗 [Clique aqui para acessar o dashboard no Streamlit](https://crypto-dashboard-luisfelipeporto.streamlit.app)
 
 ## Dashboard Interativo
+No topo da página, o dashboard conta um `card de insights automáticos`, que incluem informações da maior valorização no período, a maior queda e a criptomoeda mais volátil. Além disso, conta ainda com alguns cards de `indicadores de performance` das criptomoedas selecionadas, estando separados separados em diferentes abas por moeda, para a maior organização e apresentação.
+
 ![dashboard1](https://github.com/user-attachments/assets/8118ab94-92d0-4257-9ec1-2ac6802d7365)
 
-- No topo da página, o dashboard conta com alguns cards de indicadores de performance das criptomoedas selecionadas, estando separados separados em diferentes abas por moeda, para a maior organização e apresentação.
 Logo abaixo, encontram-se os gráficos, também divididos em pares por categoria ("Tendência e desempenho" e "Ranking e comparação").
-- Evolução do Preço (escala logarítmica): mostra o histórico de preços das criptomoedas ao longo do tempo. A escala logarítimica aplicada nele permite comparar ativos com ordens de grandeza diferentes. Esse gráfico visa responder: como os preços evoluíram ao longo do tempo e quais tendências podem ser observadas?
+- `Evolução do Preço (escala logarítmica):` mostra o histórico de preços das criptomoedas ao longo do tempo. A escala logarítimica aplicada nele permite comparar ativos com ordens de grandeza diferentes. Esse gráfico visa responder: Como os preços evoluíram ao longo do tempo e quais tendências podem ser observadas?
+- `Variação Percentual (Base 100):` mostra o desempenho relativo das criptomoedas. Nele, todos os ativos começam em 100, de modo que as linhas revelam crescimento ou queda proporcional. Esse gráfico visa responder: Qual criptomoeda teve melhor desempenho no período analisado?
 
-📊 2. Variação Percentual (Base 100)
-
-O que mostra:
-
-Desempenho relativo das criptomoedas
-
-Como funciona:
-
-Todos os ativos começam em 100
-Mostra crescimento ou queda proporcional
-
-Pergunta que responde:
-
-Qual criptomoeda teve melhor desempenho no período analisado?
-
-🏆 3. Ranking de Criptomoedas
-
-O que mostra:
-
-Ranking por:
-preço atual
-variação percentual
-
-Pergunta que responde:
-
+- `Ranking de Criptomoedas:` mostra o ranking das moedas por duas visualizações diferentes: preço atual e variação percentual. Esse gráfico visa responder:
 Quais criptomoedas estão liderando em valor ou desempenho?
 
-📦 4. Distribuição de Preços (Volatilidade)
+- `Distribuição de Preços (Volatilidade):` mostra a dispersão dos preços ao longo do tempo (boxplot), revelando estabilidade, presença de outliers e amplitude de variação. Esse gráfico visa responder: Quais criptomoedas são mais estáveis ou mais voláteis?
 
-O que mostra:
+Ademais, há uma `barra lateral` do lado esquerdo, que conta com alguns `filtros` por onde o usuário pode interagir com esses gráficos.
 
-Dispersão dos preços ao longo do tempo (boxplot)
+## Paleta de Cores
+![Paleta](https://github.com/user-attachments/assets/9813b82f-701c-45fa-a979-cd17008510bf)
 
-Insights:
+## 🤖 Automação (GitHub Actions)
+A fim de manter os dados sempre atualizados, foi criada uma automação para a execução automática do script de ingestão `todos os dias a cada 6 horas`, que roda na nuvem e, por isso, independente de máquina local.  
+### Benefícios:
+- Atualização contínua dos dados
+- Pipeline totalmente automatizado
+- Simulação de ambiente de produção
 
-estabilidade
-presença de outliers
-amplitude de variação
+## Banco de Dados (Cloud)
+- PostgreSQL hospedado no Neon
+- Acesso remoto seguro via connection string
+- Integração com scripts Python e Streamlit
+- Nenhuma credencial exposta
 
-Pergunta que responde:
+## Possíveis Melhorias Futuras
+- Monitoramento de falhas no pipeline
+- Inclusão de mais ativos
+- Criação de alertas automatizados
+- Integração com ferramentas de BI
 
-Quais criptomoedas são mais estáveis ou mais voláteis?
-
-⚡ Insights Automáticos
-
-O dashboard inclui um destaque inicial com insights como:
-
-Maior valorização no período
-Maior queda
-Criptomoeda mais volátil
-
-👉 Objetivo: entregar valor imediato ao usuário
-
-🤖 Automação (GitHub Actions)
-Execução automática do script de ingestão
-Frequência: a cada 6 horas
-Independente de máquina local
-Benefícios:
-Atualização contínua dos dados
-Pipeline totalmente automatizado
-Simulação de ambiente de produção
-☁️ Banco de Dados (Cloud)
-PostgreSQL hospedado no Neon
-Acesso remoto seguro via connection string
-Integração com scripts Python e Streamlit
-🚀 Deploy
-Dashboard hospedado via Streamlit Cloud
-Integração direta com repositório GitHub
-Atualizações automáticas conforme versionamento
-📁 Estrutura do Projeto
-crypto_pipeline/
-│
-├── app.py                # Dashboard Streamlit
-├── historico.py          # Ingestão de dados históricos
-├── ingestao.py           # Ingestão contínua
-├── requirements.txt
-├── .env (não versionado)
-│
-├── .github/
-│   └── workflows/
-│       └── ingestao.yml  # Automação (GitHub Actions)
-│
-└── README.md
-🔐 Segurança
-Variáveis sensíveis armazenadas via:
-GitHub Secrets
-Streamlit Secrets
-Nenhuma credencial exposta no código
-📌 Possíveis Melhorias Futuras
-Tratamento de duplicidade de dados
-Monitoramento de falhas no pipeline
-Inclusão de mais ativos
-Criação de alertas automatizados
-Integração com ferramentas de BI
-Containerização com Docker
-🧠 Aprendizados
-
+## Aprendizados
 Este projeto permitiu consolidar conhecimentos em:
+- Engenharia de dados (ETL)
+- Consumo de APIs
+- Modelagem e uso de banco relacional
+- Visualização de dados
+- Deploy de aplicações
+- Automação de pipelines
+- Versionamento com Git
 
-Engenharia de dados (ETL)
-Consumo de APIs
-Modelagem e uso de banco relacional
-Visualização de dados
-Deploy de aplicações
-Automação de pipelines
-Versionamento com Git
+## Licença
+Este projeto está licenciado sob a [Licença MIT](LICENSE).
+
+## Tags
+`#analisededados` `#cienciadedados` `#engenhariadedados` `#etl` `#pipeline` `#dados` `#visualizacaodedados` `#dashboard` `#automacao` `#bancodedados` `#postgresql` `#cloud` `#dadosnuvem` `#python` `#streamlit` `#plotly` `#pandas` `#api` `#criptomoedas` `#dataproject` `#portfoliodedados` `#dataanalysis` `#datascience` `#dataengineering` `#datapipeline` `#etlprocess` `#datavisualization` `#dashboarding` `#automation` `#database` `#postgres` `#cloudcomputing` `#pythonproject` `#streamlitapp` `#plotlydash` `#pandaspython` `#apiconsumption` `#crypto` `#cryptodata` `#realtime` `#datadriven` `#analytics` `#businessintelligence` `#githubactions` `#cicd` `#clouddata` `#datastack` `#dataportfolio`

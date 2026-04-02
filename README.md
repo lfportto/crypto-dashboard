@@ -17,6 +17,7 @@ Este é um projeto pessoal desenvolvido com foco no aprimoramento de habilidades
 ## Tecnologias Utilizadas
 - Python
 - Principais bibliotecas: Pandas, psycopg2, Plotly, Streamlit
+- CSS (customização de layout)
 - PostgreSQL (Neon - cloud)
 - Git & GitHub
 - GitHub Actions (automação / CI/CD)

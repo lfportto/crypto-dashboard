@@ -25,7 +25,7 @@ Este é um projeto pessoal desenvolvido com foco no aprimoramento de habilidades
 
 ## Arquitetura do Projeto
 A figura abaixo mostra como foi estruturada a arquitetura por trás desse projeto:  
-**(Em breve disponível)**
+![Pipeline](https://github.com/user-attachments/assets/22da660a-61a6-4900-9ca7-fce6753f6ad4)
 
 ## Pipeline de Dados (ETL)
 ### 🔹Extração

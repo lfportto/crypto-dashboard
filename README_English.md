@@ -17,6 +17,7 @@ This is a personal project developed with a focus on improving data analysis ski
 ## Technologies Used
 - Python
 - Main libraries: Pandas, psycopg2, Plotly, Streamlit
+- CSS (layout customization)
 - PostgreSQL (Neon - cloud)
 - Git & GitHub
 - GitHub Actions (automation / CI/CD)

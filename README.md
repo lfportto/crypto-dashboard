@@ -23,7 +23,8 @@ Este é um projeto pessoal desenvolvido com foco no aprimoramento de habilidades
 - API CoinGecko
 
 ## Arquitetura do Projeto
-A figura abaixo mostra como foi estruturada a arquitetura por trás desse projeto.
+A figura abaixo mostra como foi estruturada a arquitetura por trás desse projeto:  
+**(Em breve disponível)**
 
 ## Pipeline de Dados (ETL)
 ### 🔹Extração

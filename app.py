@@ -1,9 +1,9 @@
 """
-Filename: teste_plotly.py
+Filename: app.py
 Author: Luis Felipe Porto
-Date: 27-03-2026
+Date: 10-04-2026
 Version: 1.0
-Description: Este script se conecta a um banco de dados PostgreSQL, recupera dados de preços de criptomoedas e os visualiza usando o Plotly em um painel do Streamlit. O painel permite que os usuários analisem a evolução do preço de várias criptomoedas ao longo do tempo com uma escala logarítmica para melhor visualização das tendências.
+Description: Este script se conecta a um banco de dados PostgreSQL hospedado na nuvem via Neon, recupera dados de preços de criptomoedas e cria gráficos usando o Plotly em um dashboard do Streamlit. O painel permite que os usuários analisem o desempenho de cinco criptomoedas principais ao longo de diferentes períodos e com diferentes opções de visualização.
 Contact: luisfelipeporto.lfp@gmail.com
 """
 
@@ -32,11 +32,18 @@ nomes_moedas = {
 
 df["moeda"] = df["moeda"].map(nomes_moedas)
 
-# Título
-st.markdown(
-    "<h1 style='color: #F09C49;'>🪙 Análise de Criptomoedas em Tempo Real</h1>",
-    unsafe_allow_html=True)
-st.caption("Monitoramento de preços, tendências e variações das principais criptomoedas ao longo do tempo, com foco em cinco ativos selecionados por sua relevância e representatividade no mercado. Dados obtidos da API do [CoinGecko](https://docs.coingecko.com/)")
+# Sistema de tradução do dashboard
+from traducao import traducao
+
+if "idioma" not in st.session_state:
+    st.session_state.idioma = "pt"
+
+def tr(key, **kwargs):
+    texto = traducao.get(st.session_state.idioma, {}).get(key, key)
+    try:
+        return texto.format(**kwargs)
+    except KeyError:
+        return texto
 
 # Configuração de cores para as moedas
 color_discrete_map = {
@@ -80,13 +87,23 @@ border-right: 1px solid rgba(255,255,255,0.1);
 </style>
 """, unsafe_allow_html=True)
 
+# Seletor de idioma
+col1, col2 = st.columns([8, 2])  # ajusta proporção
+with col2:
+    idioma = st.selectbox(
+        "🌐 Idioma / Language",
+        options=["pt", "en"],
+        format_func=lambda x: "Português" if x == "pt" else "English"
+        )
+    st.session_state.idioma = idioma
+
 # Filtros na barra lateral
 with st.sidebar:
-    st.title("Filtros")
+    st.title(tr("filtros"))
 
     # Filtro de período
     periodo = st.sidebar.selectbox(
-    "Período de análise (dias)",
+    tr("periodo"),
     [7, 30, 90, 180],
     index=1)
     # Configuração do período de análise
@@ -98,14 +115,14 @@ with st.sidebar:
 
     # Filtro de moedas
     moedas_selecionadas = st.multiselect(
-        "Selecione a(s) moeda(s):",
+        tr("moedas"),
         options=df["moeda"].unique(),
         default=list(df["moeda"].unique())
     )
 
     # Tratamento de seleção vazia
     if not moedas_selecionadas:
-        st.warning("⚠️ Selecione pelo menos uma criptomoeda para visualizar os dados.")
+        st.warning(tr("alerta"))
         st.stop()
 
     # Aplica o filtro somente se houver seleção
@@ -115,22 +132,29 @@ with st.sidebar:
     
     # Filtro de visualização (gráfico 1)
     visualizacao = st.sidebar.selectbox(
-        "Visualização:",
-        ["Escala logarítmica", "Escala linear"])
-    escala = "logarítmica" if visualizacao == "Escala logarítmica" else "linear"
+        tr("visualizacao"),
+        ["Log", "Linear"])
+    escala = "log" if visualizacao == "Log" else "linear"
 
     # Dataframe para ranking das moedas (gráfico 3)
     df_rank = df_filtrado.sort_values("data_hora").groupby("moeda").last().reset_index()
 
     tipo_ranking = st.sidebar.selectbox(
-    "Ranking por:",
-    ["Preço atual", "Variação %"])
+    tr("ranking_por"),
+    [tr("preco"), tr("variacao_pct")])
 
-    st.divider()
-    st.caption(f"Atualizado em {ultima_atualizacao}")
+    st.space("small")
+    st.caption(f"{tr('atualizado')} {ultima_atualizacao}")
     linkedin = "https://www.linkedin.com/in/luis-felipe-porto/"
-    st.caption(f"🔗 Desenvolvido por [Luis Felipe Porto]({linkedin})")
+    st.caption(f"🔗 {tr('desenvolvido')} [Luis Felipe Porto]({linkedin})")
 # ==========================================================================
+
+# Título
+st.markdown(
+    f"<h1 style='color: #F09C49;'>{tr('titulo')}</h1>",
+    unsafe_allow_html=True)
+st.caption(f"{tr('descricao')}")
+st.space("small")
 
 # Configuração do card de alerta
 # ==========================================================================
@@ -169,30 +193,30 @@ st.markdown(f"""
     font-size: 14px;
     margin-bottom: 10px;
 ">
-    🚀 <b>{top_alta['moeda']}</b> lidera a alta 
+    🚀 <b>{top_alta['moeda']}</b> {tr('insight_alta')} 
     (<span style="color:#5CD96E;">{top_alta['variacao']:.2f}%</span>)
     <span style="margin: 0 14px;">•</span>
-    📉 <b>{top_queda['moeda']}</b> lidera a queda 
+    📉 <b>{top_queda['moeda']}</b> {tr('insight_queda')} 
     (<span style="color:#F44950;">{top_queda['variacao']:.2f}%</span>)
     <span style="margin: 0 14px;">•</span>
-    ⚡ <b>{top_volatil['moeda']}</b> é a mais volátil 
+    ⚡ <b>{top_volatil['moeda']}</b> {tr('insight_vol')} 
     (<span style="color:#58A6FF;">{top_volatil['volatilidade']:.2f}%</span>)
 </div>
 """, unsafe_allow_html=True)
 # ==========================================================================
 
-st.subheader("🔹 Indicadores de Performance")
+st.subheader(tr("indicadores"))
 
 def badge_variacao(valor):
     if valor >= 0:
         cor_fonte = "#5CD96E"
         cor_fundo = "#303A4B"
-        texto = "acima da mediana"
+        texto = tr("tag1")
         seta = "🡩"
     else:
         cor_fonte = "#F44950"
         cor_fundo = "#58254B"
-        texto = "abaixo da mediana"
+        texto = tr("tag2")
         seta = "🡫"
 
     return f"""
@@ -245,17 +269,17 @@ with tab1:
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric("Preço atual", f"U$ {preco_atual:.2f}", f"{variacao:.2f}%")
+        st.metric(tr("preco"), f"U$ {preco_atual:.2f}", f"{variacao:.2f}%")
 
     with col2:
-        st.metric("Variação 24h", f"{variacao:.2f}%")
+        st.metric(tr("variacao"), f"{variacao:.2f}%")
 
     with col3:
-        st.metric("Máxima (período)", f"U$ {maximo:.2f}")
+        st.metric(tr("maxima"), f"U$ {maximo:.2f}")
         st.markdown(badge_variacao(diff_max), unsafe_allow_html=True)
 
     with col4:
-        st.metric("Mínima (período)", f"U$ {minimo:.2f}")
+        st.metric(tr("minima"), f"U$ {minimo:.2f}")
         st.markdown(badge_variacao(diff_min), unsafe_allow_html=True)
 # ==========================================================================
 
@@ -280,17 +304,17 @@ with tab2:
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric("Preço atual", f"U$ {preco_atual:.2f}", f"{variacao:.2f}%")
+        st.metric(tr("preco"), f"U$ {preco_atual:.2f}", f"{variacao:.2f}%")
 
     with col2:
-        st.metric("Variação 24h", f"{variacao:.2f}%")
+        st.metric(tr("variacao"), f"{variacao:.2f}%")
 
     with col3:
-        st.metric("Máxima (período)", f"U$ {maximo:.2f}")
+        st.metric(tr("maxima"), f"U$ {maximo:.2f}")
         st.markdown(badge_variacao(diff_max), unsafe_allow_html=True)
 
     with col4:
-        st.metric("Mínima (período)", f"U$ {minimo:.2f}")
+        st.metric(tr("minima"), f"U$ {minimo:.2f}")
         st.markdown(badge_variacao(diff_min), unsafe_allow_html=True)
 # ==========================================================================
 
@@ -315,17 +339,17 @@ with tab3:
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric("Preço atual", f"U$ {preco_atual:.2f}", f"{variacao:.2f}%")
+        st.metric(tr("preco"), f"U$ {preco_atual:.2f}", f"{variacao:.2f}%")
 
     with col2:
-        st.metric("Variação 24h", f"{variacao:.2f}%")
+        st.metric(tr("variacao"), f"{variacao:.2f}%")
 
     with col3:
-        st.metric("Máxima (período)", f"U$ {maximo:.2f}")
+        st.metric(tr("maxima"), f"U$ {maximo:.2f}")
         st.markdown(badge_variacao(diff_max), unsafe_allow_html=True)
 
     with col4:
-        st.metric("Mínima (período)", f"U$ {minimo:.2f}")
+        st.metric(tr("minima"), f"U$ {minimo:.2f}")
         st.markdown(badge_variacao(diff_min), unsafe_allow_html=True)
 # ==========================================================================
 
@@ -350,17 +374,17 @@ with tab4:
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric("Preço atual", f"U$ {preco_atual:.2f}", f"{variacao:.2f}%")
+        st.metric(tr("preco"), f"U$ {preco_atual:.2f}", f"{variacao:.2f}%")
 
     with col2:
-        st.metric("Variação 24h", f"{variacao:.2f}%")
+        st.metric(tr("variacao"), f"{variacao:.2f}%")
 
     with col3:
-        st.metric("Máxima (período)", f"U$ {maximo:.2f}")
+        st.metric(tr("maxima"), f"U$ {maximo:.2f}")
         st.markdown(badge_variacao(diff_max), unsafe_allow_html=True)
 
     with col4:
-        st.metric("Mínima (período)", f"U$ {minimo:.2f}")
+        st.metric(tr("minima"), f"U$ {minimo:.2f}")
         st.markdown(badge_variacao(diff_min), unsafe_allow_html=True)
 # ==========================================================================
 
@@ -385,17 +409,17 @@ with tab5:
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric("Preço atual", f"U$ {preco_atual:.2f}", f"{variacao:.2f}%")
+        st.metric(tr("preco"), f"U$ {preco_atual:.2f}", f"{variacao:.2f}%")
 
     with col2:
-        st.metric("Variação 24h", f"{variacao:.2f}%")
+        st.metric(tr("variacao"), f"{variacao:.2f}%")
 
     with col3:
-        st.metric("Máxima (período)", f"U$ {maximo:.2f}")
+        st.metric(tr("maxima"), f"U$ {maximo:.2f}")
         st.markdown(badge_variacao(diff_max), unsafe_allow_html=True)
 
     with col4:
-        st.metric("Mínima (período)", f"U$ {minimo:.2f}")
+        st.metric(tr("minima"), f"U$ {minimo:.2f}")
         st.markdown(badge_variacao(diff_min), unsafe_allow_html=True)
 # ==========================================================================
 
@@ -410,29 +434,29 @@ fig = px.line(
     color_discrete_map=color_discrete_map,
     markers=True,
     labels={
-        "preco_usd": "Preço (USD)",
-        "moeda": "Criptomoeda"}
+        "preco_usd": tr('eixo_preco'),
+        "moeda": tr('moeda_legenda')}
 )
 
 # Personalização do hover
 fig.update_traces(
     hovertemplate=
-    "<b>Data:</b> %{x}<br>" +
-    "<b>Preço:</b> U$ %{y:.2f}<br>" +
-    "<b>Moeda:</b> %{fullData.name}<extra></extra>",
+    f"<b>{tr('Data')}: </b> %{{x}}<br>" +
+    f"<b>{tr('eixo_preco')}: </b> U$ %{{y:.2f}}<br>" +
+    f"<b>{tr('moeda_legenda2')}: </b> %{{fullData.name}}<extra></extra>",
     marker_size=4
 )
 
 # Personalização do layout
 fig.update_layout(
     title=dict(
-        text=f"Evolução do preço das criptomoedas nos últimos {periodo} dias (escala {escala})",
+        text=tr('grafico1', periodo=periodo, escala=escala),
         font=dict(size=20),
         x=0.5,
         xanchor="center",
         yanchor="top"),
     xaxis_title=None,
-    legend_title="Moedas",
+    legend_title= tr('moeda_legenda'),
     legend=dict(
         y=0.5,
         yanchor="middle"),
@@ -441,7 +465,7 @@ fig.update_layout(
 )
 
 # Configuração da escala do eixo y
-if visualizacao == "Escala logarítmica":
+if visualizacao == "Log":
     fig.update_yaxes(type="log")
 else:
     fig.update_yaxes(type="linear")
@@ -490,22 +514,22 @@ fig_pct = px.line(
     markers=True,
     labels={
         "preco_normalizado": "Base 100",
-        "moeda": "Moedas"
+        "moeda": tr('moeda_legenda')
     }
 )
 
 # Personalização do hover
 fig_pct.update_traces(
     hovertemplate=
-    "<b>Data:</b> %{x}<br>" +
+    f"<b>{tr('Data')}: </b> %{{x}}<br>" +
     "<b>Base 100:</b> %{y:.2f}<br>" +
-    "<b>Moeda:</b> %{fullData.name}<extra></extra>"
+    f"<b>{tr('moeda_legenda2')}: </b> %{{fullData.name}}<extra></extra>"
 )
 
 # Personalização do layout
 fig_pct.update_layout(
     title=dict(
-        text=f"Variação percentual das criptomoedas (base 100) nos últimos {periodo} dias",
+        text=tr('grafico2', periodo=periodo),
         font=dict(size=20),
         x=0.5,
         xanchor="center",
@@ -533,7 +557,7 @@ df_rank["variacao_pct"] = (
     df_rank["preco_usd_inicio"]
 ) * 100
 
-if tipo_ranking == "Preço atual":
+if tipo_ranking == tr("preco"):
     df_rank = df_rank.sort_values("preco_usd_atual", ascending=False)
     eixo_x = "preco_usd_atual"
     titulo = "Ranking por Preço Atual (USD)"
@@ -555,21 +579,21 @@ fig_rank = px.bar(
     color_discrete_map=color_discrete_map,
     text=eixo_x,
     labels={
-        "preco_usd_atual": "Preço atual (USD)",
-        "variacao_pct": "Variação (%)"
+        "preco_usd_atual": tr('eixo_preco_atual'),
+        "variacao_pct": tr('variacao_pct')
     }
 )
 
 # Personalização do layout
 fig_rank.update_layout(
     title=dict(
-        text=f"Ranking das criptomoedas por {tipo_ranking} na cotação atual",
+        text=tr('grafico3', tipo=tr('preco') if tipo_ranking == "Preço atual" else tr('variacao_pct')),
         font=dict(size=20),
         x=0.5,
         xanchor="center",
         yanchor="top"),
     yaxis_title=None,
-    legend_title="Moedas",
+    legend_title=tr('moeda_legenda'),
     legend=dict(
         y=0.5,
         yanchor="middle"),
@@ -590,17 +614,17 @@ fig_rank.update_traces(
 )
 
 # Personalização do hover
-if tipo_ranking == "Preço atual":
+if tipo_ranking == tr("preco"):
     hovertemplate = (
-        "<b>Moeda:</b> %{y}<br>"
-        "<b>Preço atual:</b> U$ %{x:.2f}<br>"
+        f"<b>{tr('moeda_legenda2')}: </b> %{{y}}<br>"
+        f"<b>{tr('preco')}: </b> U$ %{{x:.2f}}<br>"
         "<extra></extra>"
     )
 
 else:
     hovertemplate = (
-        "<b>Moeda:</b> %{y}<br>"
-        "<b>Variação:</b> %{x:.2f}%<br>"
+        f"<b>{tr('moeda_legenda2')}: </b> %{{y}}<br>"
+        f"<b>{tr('variacao_pct')}: </b> %{{x:.2f}}%<br>"
         "<extra></extra>"
     )
 
@@ -628,14 +652,14 @@ fig_box = px.box(
 # Personalização do layout
 fig_box.update_layout(
     title=dict(
-        text=f"Distribuição normalizada de preços por criptomoeda (volatilidade)",
+        text=tr('grafico4'),
         font=dict(size=20),
         x=0.5,
         xanchor="center",
         yanchor="top"),
     xaxis_title=None,
-    yaxis_title="Preço (USD)",
-    legend_title="Moedas",
+    yaxis_title=tr('eixo_preco'),
+    legend_title=tr('moeda_legenda'),
     legend=dict(
         y=0.5,
         yanchor="middle"),
@@ -685,20 +709,20 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.subheader("🔹Comportamento de Mercado")
+st.subheader(tr("aba_mercado"))
 
 # Exibição dos gráficos
-tab1, tab2 = st.tabs(["📈 Tendência e desempenho", "📊 Ranking e comparação"])
+tab1, tab2 = st.tabs([tr("aba1"), tr("aba2")])
 with tab1:
     st.plotly_chart(fig)
     st.divider()
     st.plotly_chart(fig_pct)
-    st.caption("Compara o desempenho relativo das criptomoedas ao longo do tempo, normalizando todas para começar em 100 no início do período, o que permite visualizar claramente quais moedas cresceram ou caíram mais independentemente do preço absoluto.")
+    st.caption(tr("caption1"))
 with tab2:
     st.plotly_chart(fig_rank)
     st.divider()
     st.plotly_chart(fig_box)
-    st.caption("Mostra a dispersão dos preços ao longo do período (normalizados), evidenciando o quanto cada criptomoeda varia em torno de seu valor típico, o que permite identificar quais são mais voláteis ou mais estáveis.")
+    st.caption(tr("caption2"))
 
 # Personalização do fundo
 st.markdown(

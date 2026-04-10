@@ -56,7 +56,7 @@ Dados abertos obtidos via API da [CoinGecko](https://docs.coingecko.com)
 🔗 [Clique aqui para acessar o dashboard no Streamlit](https://crypto-dashboard-luisfelipeporto.streamlit.app)
 
 ## Dashboard Interativo
-No topo da página, o dashboard conta um `card de insights automáticos`, que incluem informações da maior valorização no período, a maior queda e a criptomoeda mais volátil. Além disso, conta ainda com alguns cards de `indicadores de performance` das criptomoedas selecionadas, estando separados separados em diferentes abas por moeda, para a maior organização e apresentação.
+No topo da página, há um seletor suspenso por onde é possível escolher o idioma do dashboard, sendo que o usuário pode alternar entre português ou inglês. Logo abaixo do título e subtítulo, o dashboard conta um `card de insights automáticos`, que incluem informações da maior valorização no período, a maior queda e a criptomoeda mais volátil. Além disso, conta ainda com alguns cards de `indicadores de performance` das criptomoedas selecionadas, estando separados separados em diferentes abas por moeda, para a maior organização e apresentação.
 
 ![dashboard1](https://github.com/user-attachments/assets/8118ab94-92d0-4257-9ec1-2ac6802d7365)
 
@@ -102,6 +102,9 @@ Este projeto permitiu consolidar conhecimentos em:
 - Deploy de aplicações
 - Automação de pipelines
 - Versionamento com Git
+
+## Atualizações
+🔹 `Versão 1.1 (Publicada em 10 de abril de 2026):` Adicionado sistema de alternância entre idiomas para a visualização do dashboard (Português-BR e Inglês).
 
 ## Licença
 Este projeto está licenciado sob a [Licença MIT](LICENSE).

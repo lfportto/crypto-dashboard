@@ -58,9 +58,9 @@ Open data obtained via the [CoinGecko API](https://docs.coingecko.com)
 🔗 [Click here to access the dashboard on Streamlit](https://crypto-dashboard-luisfelipeporto.streamlit.app)
 
 ## Interactive Dashboard
-At the top of the page, the dashboard includes an `automatic insights card`, highlighting information such as the highest gain in the period, the biggest drop, and the most volatile cryptocurrency. In addition, it features `key performance indicator cards` for the selected cryptocurrencies, organized into separate tabs by asset for better structure and presentation.
+At the top of the page, there is a dropdown selector where you can choose the dashboard language, switching between Brazilian Portuguese and English. Just below the title and subtitle, the dashboard includes an `automatic insights card`, highlighting information such as the highest gain in the period, the biggest drop, and the most volatile cryptocurrency. In addition, it features `key performance indicator cards` for the selected cryptocurrencies, organized into separate tabs by asset for better structure and presentation.  
 
-![dashboard1](https://github.com/user-attachments/assets/8118ab94-92d0-4257-9ec1-2ac6802d7365)
+![dashboard1](https://github.com/user-attachments/assets/c4564770-81f4-4d27-9ee8-a61d7bb3faa4)
 
 Below that, the charts are displayed, also grouped in pairs by category ("Trend and Performance" and "Ranking and Comparison"):
 - `Price Evolution (logarithmic scale):` shows the historical price trends of cryptocurrencies over time. The logarithmic scale allows comparison between assets with different orders of magnitude. This chart answers: How have prices evolved over time and what trends can be observed?
@@ -105,6 +105,9 @@ This project helped consolidate knowledge in:
 - Application deployment
 - Pipeline automation
 - Version control with Git
+
+## Updates
+🔹 `Version 1.1 (Published on April 10, 2026):` Added language switching system for dashboard display (Brazilian Portuguese and English).
 
 ## License
 This project is licensed under the [MIT License](LICENSE).

@@ -2,7 +2,7 @@
 Filename: app.py
 Author: Luis Felipe Porto
 Date: 10-04-2026
-Version: 1.0
+Version: 1.1
 Description: Este script se conecta a um banco de dados PostgreSQL hospedado na nuvem via Neon, recupera dados de preços de criptomoedas e cria gráficos usando o Plotly em um dashboard do Streamlit. O painel permite que os usuários analisem o desempenho de cinco criptomoedas principais ao longo de diferentes períodos e com diferentes opções de visualização.
 Contact: luisfelipeporto.lfp@gmail.com
 """

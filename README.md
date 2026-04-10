@@ -56,9 +56,9 @@ Dados abertos obtidos via API da [CoinGecko](https://docs.coingecko.com)
 🔗 [Clique aqui para acessar o dashboard no Streamlit](https://crypto-dashboard-luisfelipeporto.streamlit.app)
 
 ## Dashboard Interativo
-No topo da página, há um seletor suspenso por onde é possível escolher o idioma do dashboard, sendo que o usuário pode alternar entre português ou inglês. Logo abaixo do título e subtítulo, o dashboard conta um `card de insights automáticos`, que incluem informações da maior valorização no período, a maior queda e a criptomoeda mais volátil. Além disso, conta ainda com alguns cards de `indicadores de performance` das criptomoedas selecionadas, estando separados separados em diferentes abas por moeda, para a maior organização e apresentação.
+No topo da página, há um seletor suspenso por onde é possível escolher o idioma do dashboard, sendo que o usuário pode alternar entre português ou inglês. Logo abaixo do título e subtítulo, o dashboard conta um `card de insights automáticos`, que incluem informações da maior valorização no período, a maior queda e a criptomoeda mais volátil. Além disso, conta ainda com alguns cards de `indicadores de performance` das criptomoedas selecionadas, estando separados separados em diferentes abas por moeda, para a maior organização e apresentação.  
 
-![dashboard1](https://github.com/user-attachments/assets/8118ab94-92d0-4257-9ec1-2ac6802d7365)
+![dashboard1](https://github.com/user-attachments/assets/f26e6a4e-97ff-434e-8044-f322a02fc8f1)
 
 Logo abaixo, encontram-se os gráficos, também divididos em pares por categoria ("Tendência e desempenho" e "Ranking e comparação").
 - `Evolução do Preço (escala logarítmica):` mostra o histórico de preços das criptomoedas ao longo do tempo. A escala logarítimica aplicada nele permite comparar ativos com ordens de grandeza diferentes. Esse gráfico visa responder: Como os preços evoluíram ao longo do tempo e quais tendências podem ser observadas?

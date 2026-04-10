@@ -25,7 +25,8 @@ This is a personal project developed with a focus on improving data analysis ski
 
 ## Project Architecture
 The figure below shows how the architecture behind this project was structured:  
-![Pipeline](https://github.com/user-attachments/assets/741cf6e5-f1c3-4e5d-8966-134e65f46345)
+
+![Pipeline](https://github.com/user-attachments/assets/7e34df30-3bdc-4e3f-bd9d-965cc62baf1a)
 
 ## Data Pipeline (ETL)
 ### 🔹 Extraction
